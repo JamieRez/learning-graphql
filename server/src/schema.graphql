@@ -1,0 +1,15 @@
+# import Comment, CommentSubscriptionPayload from "./generated/prisma.graphql"
+
+type Query {
+  feed: [Comment!]!
+  comment(id: ID!): Comment
+}
+
+type Mutation {
+  createComment(text: String!): Comment
+  deleteComment(id: ID!): Comment
+}
+
+type Subscription {
+  newComment: CommentSubscriptionPayload
+}
