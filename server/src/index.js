@@ -22,7 +22,7 @@ const resolvers = {
       )
     },
     deleteComment(parent, { id }, ctx, info) {
-      return ctx.db.mutation.deleteComment({where : { id }}, info)
+      return ctx.db.mutation.deleteComment({ where: { id } }, info)
     }
   },
   Subscription

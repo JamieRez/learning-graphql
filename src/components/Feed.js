@@ -5,9 +5,34 @@ import { Query, Subscription } from 'react-apollo'
 import  { gql } from 'apollo-boost'
 
 export default class Feed extends Component {
+
+  state = {
+    newComments : []
+  }
+
   render(){
     return (
       <div className="feedContainer">
+        <h1> Comments </h1>
+        <Subscription subscription={FEED_SUBSCRIBE}>
+          {({ data, loading, error }) => {
+            if(data){
+              let newComments = this.state.newComments
+              newComments.unshift(data.newComment.node)
+              return (
+                <div>
+                  {newComments.map(newComment => {
+                    return (
+                      <Comment comment={!loading && newComment} />
+                    )
+                  })}
+                </div>
+              )
+            }else{
+              return null
+            }
+          }}
+        </Subscription>
         <Query query={FEED_QUERY}>
           {({data, loading, error, refetch}) => {
             if(loading){
@@ -20,30 +45,26 @@ export default class Feed extends Component {
                 <h1> Error Loading Comments </h1>
               )
             }
-            return (
-              <Fragment>
-                <div>
-                <h1> Comments </h1>
-                {data.feed.map(comment => {
-                  return (
-                    <div>
-                      <Comment comment={comment}/>
-                    </div>
-                  )
-                  })
-                }
-                <Subscription subscription={FEED_SUBSCRIBE}>
-                  {({ data, loading, error }) => {
+            if(data){
+              let reverseFeed = []
+              for(var i = data.feed.length-1; i >= 0; i--){
+                reverseFeed.push(data.feed[i]);
+              }
+              return (
+                <Fragment>
+                  <div>
+                  {reverseFeed.map(comment => {
                     return (
                       <div>
-                        <Comment comment={!loading && data.newComment.node} />
+                        <Comment comment={comment}/>
                       </div>
                     )
-                  }}
-                </Subscription>
-                </div>
-              </Fragment>
-            )
+                    })
+                  }
+                  </div>
+                </Fragment>
+              )
+            }
           }}
         </Query>
       </div>

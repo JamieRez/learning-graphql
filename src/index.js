@@ -8,8 +8,7 @@ import {
   Switch,
 } from 'react-router-dom'
 
-import CommentForm from './components/CommentForm'
-import Feed from './components/Feed'
+import App from './components/App'
 
 import { ApolloProvider } from 'react-apollo'
 import { ApolloClient } from 'apollo-client';
@@ -53,8 +52,7 @@ ReactDOM.render(
   <ApolloProvider client={client}>
     <Router>
       <Fragment>
-        <CommentForm />
-        <Feed />
+        <App />
       </Fragment>
     </Router>
   </ApolloProvider>,
